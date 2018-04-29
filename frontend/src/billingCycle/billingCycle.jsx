@@ -1,7 +1,7 @@
-import React, {Component} from 'react'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {selectTab, showTabs} from '../common/tab/tabActions'
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { selectTab, showTabs } from '../common/tab/tabActions'
 
 import ContentHeader from '../common/template/contentHeader'
 import Content from '../common/template/content'
@@ -12,38 +12,51 @@ import TabsContent from '../common/tab/tabsContent'
 import tabsHeader from '../common/tab/tabsHeader';
 import TabHeader from '../common/tab/tabHeader'
 import TabContent from '../common/tab/tabContent'
+import List from './billingCycleList'
+import Form from './billingCycleForm'
+import {init, create, update, remove } from './billingCycleActions'
 
 class BillingCycle extends Component {
 
-        componentWillMount() {
-                this.props.selectTab('tabList')
-                this.props.showTabs('tabList, tabCreate')
-        }
+	componentWillMount() {
+		this.props.init()
+	}
 
-        render () {
-                return (
-                        <div>
-                                <ContentHeader title='Billing Cycles' small='Register' />
-                                <Content>
-                                        <Tabs>
-                                                <TabsHeader>
-                                                        <TabHeader label='List' icon='bars' target='tabList' />
-                                                        <TabHeader label='Create' icon='plus' target='tabCreate' />
-                                                        <TabHeader label='Update' icon='pencil' target='tabUpdate' />
-                                                        <TabHeader label='Delete' icon='trash-o' target='tabDelete' />
-                                                </TabsHeader>
-                                                <TabsContent>
-                                                        <TabContent id='tabList'><h1>List</h1></TabContent>
-                                                        <TabContent id='tabCreate'><h1>Create</h1></TabContent>
-                                                        <TabContent id='tabUpdate'><h1>Update</h1></TabContent>
-                                                        <TabContent id='tabDelete'><h1>Delete</h1></TabContent> 
-                                                </TabsContent>
-                                        </Tabs> 
-                                </Content>
-                        </div>
-                )
-        }
+	render() {
+		return (
+			<div>
+				<ContentHeader title='Billing Cycles' small='Register' />
+				<Content>
+					<Tabs>
+						<TabsHeader>
+							<TabHeader label='List' icon='bars' target='tabList' />
+							<TabHeader label='Create' icon='plus' target='tabCreate' />
+							<TabHeader label='Update' icon='pencil' target='tabUpdate' />
+							<TabHeader label='Delete' icon='trash-o' target='tabDelete' />
+						</TabsHeader>
+						<TabsContent>
+							<TabContent id='tabList'>
+								<List />
+							</TabContent>
+							<TabContent id='tabCreate'>
+								<Form onSubmit={this.props.create} submitLabel='Create'
+									submitClass='primary'/>
+							</TabContent>
+							<TabContent id='tabUpdate'>
+								<Form onSubmit={this.props.update} submitLabel='Update'
+									submitClass='info'/>
+							</TabContent>
+							<TabContent id='tabDelete'>
+								<Form onSubmit={this.props.remove} readOnly={true} submitLabel='Delete'
+									submitClass='danger' />
+							</TabContent>
+						</TabsContent>
+					</Tabs>
+				</Content>
+			</div>
+		)
+	}
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({selectTab, showTabs}, dispatch)
+const mapDispatchToProps = dispatch => bindActionCreators({ selectTab, showTabs, create, update, remove, init }, dispatch)
 export default connect(null, mapDispatchToProps)(BillingCycle)
